@@ -148,37 +148,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const primaryNav = document.querySelector('.primary-nav');
     const body = document.body;
     let lastScrollTop = 0;
-    let isNavVisible = true;
     let ticking = false;
     
     // Get nav height from computed styles (140px per CSS variable)
     const navHeight = primaryNav ? primaryNav.offsetHeight : 140;
     
     // Function to handle scroll direction detection and nav visibility
-    // Nav stays fixed at top and naturally goes out of view when scrolling down
-    // Nav slides back into view when scrolling up
+    // Matching MSCI.com behavior: nav hides immediately on any downward scroll, shows on upward scroll
     function handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollingDown = scrollTop > lastScrollTop;
         const scrollingUp = scrollTop < lastScrollTop;
         
-        // At very top of page (scrollTop === 0), always ensure nav is visible
+        // At very top of page (scrollTop === 0), nav is visible (naturally in view)
         if (scrollTop === 0) {
-            if (!isNavVisible) {
-                primaryNav.classList.remove('hidden');
-                body.classList.add('nav-visible');
-                isNavVisible = true;
+            primaryNav.classList.remove('scrolled-past');
+            body.classList.add('nav-visible');
+        } else if (scrollingDown) {
+            // Scrolling down - nav stays fixed but naturally goes out of view
+            // Don't actively hide it until scrolled past nav height
+            // Only then mark it as scrolled-past so it stays hidden
+            if (scrollTop > navHeight) {
+                primaryNav.classList.add('scrolled-past');
+                body.classList.remove('nav-visible');
             }
         } else if (scrollingUp) {
-            // Scrolling up - show nav (slide it back into view)
-            if (!isNavVisible) {
-                primaryNav.classList.remove('hidden');
-                body.classList.add('nav-visible');
-                isNavVisible = true;
-            }
+            // Scrolling up - slide nav back into view
+            primaryNav.classList.remove('scrolled-past');
+            body.classList.add('nav-visible');
         }
-        // When scrolling down: nav stays fixed at top (naturally goes out of view as you scroll past)
-        // We don't actively hide it - it just scrolls out of view naturally
-        // Only on scroll up do we actively slide it back in
+        // If stationary and scrolled past nav, keep it hidden (already applied via scrolled-past class)
         
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
         ticking = false;
@@ -194,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize: nav visible at page load
     body.classList.add('nav-visible');
-    isNavVisible = true;
 });
 
 // Phase 8-10 will add:
