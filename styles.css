@@ -313,7 +313,7 @@ body.nav-fixed .sticky-toc {
     margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Space between items (left) and CTA (right) */
     gap: var(--toc-item-gap);
     position: relative;
     padding: 0 var(--section-padding-x);
@@ -324,9 +324,7 @@ body.nav-fixed .sticky-toc {
     gap: var(--toc-item-gap);
     align-items: flex-end; /* Align all items at bottom for consistent vertical alignment */
     height: 100%;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    /* Removed absolute positioning - now left-aligned naturally */
 }
 
 .toc-item {
@@ -384,10 +382,7 @@ body.nav-fixed .sticky-toc {
 }
 
 .btn-toc-demo {
-    position: absolute;
-    right: var(--section-padding-x);
-    top: 50%;
-    transform: translateY(-50%);
+    /* Removed absolute positioning - now right-aligned via flexbox space-between */
 }
 
 /* ========================================
