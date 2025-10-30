@@ -155,20 +155,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const navHeight = primaryNav ? primaryNav.offsetHeight : 140;
     
     // Function to handle scroll direction detection and nav visibility
+    // Matching MSCI.com behavior: nav hides immediately on any downward scroll, shows on upward scroll
     function handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const scrollingDown = scrollTop > lastScrollTop;
         const scrollingUp = scrollTop < lastScrollTop;
         
-        // Nav should hide immediately when scrolling past it (matching MSCI site behavior)
-        // Nav shows when scrolling back up (behavior is correct, keep as is)
-        
-        if (scrollTop <= navHeight) {
-            // At top of page (within nav height), always show nav
+        // At very top of page (scrollTop === 0), always show nav
+        if (scrollTop === 0) {
             if (!isNavVisible) {
                 primaryNav.classList.remove('hidden');
                 body.classList.add('nav-visible');
                 isNavVisible = true;
+            }
+        } else if (scrollingDown) {
+            // Scrolling down - hide nav immediately (matching MSCI.com behavior)
+            if (isNavVisible) {
+                primaryNav.classList.add('hidden');
+                body.classList.remove('nav-visible');
+                isNavVisible = false;
             }
         } else if (scrollingUp) {
             // Scrolling up - show nav (correct behavior, keep as is)
@@ -177,14 +182,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 body.classList.add('nav-visible');
                 isNavVisible = true;
             }
-        } else {
-            // Scrolling down past nav OR stationary below nav - hide immediately (matching MSCI site)
-            if (isNavVisible) {
-                primaryNav.classList.add('hidden');
-                body.classList.remove('nav-visible');
-                isNavVisible = false;
-            }
         }
+        // Note: If scrollTop > 0 and not scrolling (stationary), keep current state
         
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
         ticking = false;

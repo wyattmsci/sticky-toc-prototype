@@ -124,7 +124,6 @@ body.nav-visible {
     align-items: center;
     padding: 24px var(--section-padding-x);
     background-color: var(--color-white);
-    border-bottom: 1px solid var(--color-stroke-primary);
 }
 
 .nav-main-content {
