@@ -29,54 +29,33 @@ document.addEventListener('DOMContentLoaded', function() {
                     tocItem.removeAttribute('aria-current');
                 });
                 
-                // Update active state immediately on click (skip observer during scroll)
-                if (window.updateActiveTOCFromClick) {
-                    window.updateActiveTOCFromClick(targetId);
-                } else {
-                    // Fallback if function not available yet
-                    tocItems.forEach(tocItem => {
-                        tocItem.classList.remove('active');
-                        tocItem.removeAttribute('aria-current');
-                    });
-                    this.classList.add('active');
-                    this.setAttribute('aria-current', 'page');
-                }
+                // Update active state immediately on click (instant, no delay)
+                tocItems.forEach(tocItem => {
+                    tocItem.classList.remove('active');
+                    tocItem.removeAttribute('aria-current');
+                });
+                this.classList.add('active');
+                this.setAttribute('aria-current', 'page');
                 
-                // Custom smooth scroll to section (360ms ease-in-out per Phase 5 spec)
+                // Smooth scroll to section using native smooth scroll (super smooth, hardware-accelerated)
                 const tocHeight = 96; // TOC height is 96px
                 const targetRect = targetSection.getBoundingClientRect();
-                const startScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const targetPosition = startScrollTop + targetRect.top - tocHeight;
-                const distance = targetPosition - startScrollTop;
-                const duration = 360; // 360ms per spec
-                const startTime = performance.now();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const targetPosition = scrollTop + targetRect.top - tocHeight;
                 
-                // Ease-in-out function for smooth acceleration/deceleration
-                function easeInOut(t) {
-                    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Focus management (minimal delay for screen reader accessibility)
+                const heading = targetSection.querySelector('h2, h3');
+                if (heading) {
+                    setTimeout(() => {
+                        heading.setAttribute('tabindex', '-1');
+                        heading.focus();
+                    }, 100);
                 }
-                
-                // Custom smooth scroll animation
-                function animateScroll(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    const easedProgress = easeInOut(progress);
-                    
-                    window.scrollTo(0, startScrollTop + distance * easedProgress);
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(animateScroll);
-                    } else {
-                        // Focus management after scroll completes
-                        const heading = targetSection.querySelector('h2, h3');
-                        if (heading) {
-                            heading.setAttribute('tabindex', '-1');
-                            heading.focus();
-                        }
-                    }
-                }
-                
-                requestAnimationFrame(animateScroll);
                 
                 console.log('Active TOC item changed to:', this.dataset.section);
             }
