@@ -7,6 +7,10 @@ console.log('Sticky TOC Prototype loaded');
 // Phase 3 ✅: Sticky positioning complete (CSS-based)
 // Phase 4 ✅: Active state styling & click handling complete
 
+// Global flag to track programmatic scrolling (from TOC clicks)
+// This prevents primary nav from appearing during programmatic scrolls
+let isProgrammaticScroll = false;
+
 // TOC Click Handler - Update active state and anchor navigation
 document.addEventListener('DOMContentLoaded', function() {
     const tocItems = document.querySelectorAll('.toc-item');
@@ -28,6 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.classList.add('active');
                 this.setAttribute('aria-current', 'page');
                 
+                // Mark as programmatic scroll to prevent nav from appearing
+                isProgrammaticScroll = true;
+                
                 // Smooth scroll to section (360ms ease-in-out per Phase 5 spec)
                 const tocHeight = 96; // TOC height is 96px
                 const targetRect = targetSection.getBoundingClientRect();
@@ -39,14 +46,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     behavior: 'smooth'
                 });
                 
-                // Focus management for accessibility
+                // Clear programmatic scroll flag after scroll completes (~400ms to account for animation)
                 setTimeout(() => {
+                    isProgrammaticScroll = false;
+                    
+                    // Focus management for accessibility
                     const heading = targetSection.querySelector('h2, h3');
                     if (heading) {
                         heading.setAttribute('tabindex', '-1');
                         heading.focus();
                     }
-                }, 360);
+                }, 400);
                 
                 console.log('Active TOC item changed to:', this.dataset.section);
             }
@@ -155,6 +165,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Nav behavior: Static (scrolls out naturally) when scrolling down, fixed (slides in) when scrolling up
     function handleScroll() {
+        // Skip nav visibility updates during programmatic scrolls (e.g., TOC clicks)
+        if (isProgrammaticScroll) {
+            lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            ticking = false;
+            return;
+        }
+        
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const scrollingDown = scrollTop > lastScrollTop;
         const scrollingUp = scrollTop < lastScrollTop;
@@ -168,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
             primaryNav.classList.remove('nav-fixed');
             body.classList.remove('nav-fixed');
         } else if (scrollingUp) {
-            // Scrolling up - nav becomes fixed and slides into view
+            // Scrolling up - nav becomes fixed and slides into view (only on actual user scroll)
             primaryNav.classList.add('nav-fixed');
             body.classList.add('nav-fixed');
         }
