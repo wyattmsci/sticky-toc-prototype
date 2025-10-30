@@ -35,6 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Mark as programmatic scroll to prevent nav from appearing
                 isProgrammaticScroll = true;
                 
+                // Immediately hide nav if it's visible (prevent it from showing during programmatic scroll)
+                const primaryNav = document.querySelector('.primary-nav');
+                const body = document.body;
+                if (primaryNav && primaryNav.classList.contains('nav-fixed')) {
+                    primaryNav.classList.remove('nav-fixed');
+                    body.classList.remove('nav-fixed');
+                }
+                
                 // Smooth scroll to section (360ms ease-in-out per Phase 5 spec)
                 const tocHeight = 96; // TOC height is 96px
                 const targetRect = targetSection.getBoundingClientRect();
@@ -46,7 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     behavior: 'smooth'
                 });
                 
-                // Clear programmatic scroll flag after scroll completes (~400ms to account for animation)
+                // Clear programmatic scroll flag after scroll completes
+                // Use longer timeout (800ms) to ensure it covers the entire smooth scroll animation
+                // This prevents nav from appearing when scrolling in reverse order
                 setTimeout(() => {
                     isProgrammaticScroll = false;
                     
@@ -56,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         heading.setAttribute('tabindex', '-1');
                         heading.focus();
                     }
-                }, 400);
+                }, 800);
                 
                 console.log('Active TOC item changed to:', this.dataset.section);
             }
@@ -166,7 +176,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Nav behavior: Static (scrolls out naturally) when scrolling down, fixed (slides in) when scrolling up
     function handleScroll() {
         // Skip nav visibility updates during programmatic scrolls (e.g., TOC clicks)
+        // Also ensure nav stays hidden during programmatic scrolls
         if (isProgrammaticScroll) {
+            // Keep nav hidden during programmatic scroll (especially important for reverse scrolls)
+            if (primaryNav.classList.contains('nav-fixed')) {
+                primaryNav.classList.remove('nav-fixed');
+                body.classList.remove('nav-fixed');
+            }
             lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
             ticking = false;
             return;
