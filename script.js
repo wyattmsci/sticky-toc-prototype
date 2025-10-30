@@ -1,11 +1,16 @@
 // Sticky TOC Prototype - JavaScript
-// Phase 4-6: Active state styling, click handling, and scroll-sync ✅
+// Phases 2-7 Complete ✅
+// Phase 8: Skipped (accessibility handled by developers)
+// Phase 9: Polish & Testing ✅
 
 console.log('Sticky TOC Prototype loaded');
 
 // Phase 2 ✅: Static structure complete
 // Phase 3 ✅: Sticky positioning complete (CSS-based)
 // Phase 4 ✅: Active state styling & click handling complete
+// Phase 5 ✅: Click-to-anchor navigation (360ms ease-in-out)
+// Phase 6 ✅: Scroll-sync active state with IntersectionObserver
+// Phase 7 ✅: Primary nav slide-on-scroll-up (220ms ease-out)
 
 // TOC Click Handler - Update active state and anchor navigation
 document.addEventListener('DOMContentLoaded', function() {
@@ -24,29 +29,54 @@ document.addEventListener('DOMContentLoaded', function() {
                     tocItem.removeAttribute('aria-current');
                 });
                 
-                // Add active class to clicked item
-                this.classList.add('active');
-                this.setAttribute('aria-current', 'page');
+                // Update active state immediately on click (skip observer during scroll)
+                if (window.updateActiveTOCFromClick) {
+                    window.updateActiveTOCFromClick(targetId);
+                } else {
+                    // Fallback if function not available yet
+                    tocItems.forEach(tocItem => {
+                        tocItem.classList.remove('active');
+                        tocItem.removeAttribute('aria-current');
+                    });
+                    this.classList.add('active');
+                    this.setAttribute('aria-current', 'page');
+                }
                 
-                // Smooth scroll to section (360ms ease-in-out per Phase 5 spec)
+                // Custom smooth scroll to section (360ms ease-in-out per Phase 5 spec)
                 const tocHeight = 96; // TOC height is 96px
                 const targetRect = targetSection.getBoundingClientRect();
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const targetPosition = scrollTop + targetRect.top - tocHeight;
+                const startScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const targetPosition = startScrollTop + targetRect.top - tocHeight;
+                const distance = targetPosition - startScrollTop;
+                const duration = 360; // 360ms per spec
+                const startTime = performance.now();
                 
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+                // Ease-in-out function for smooth acceleration/deceleration
+                function easeInOut(t) {
+                    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                }
                 
-                // Focus management for accessibility
-                setTimeout(() => {
-                    const heading = targetSection.querySelector('h2, h3');
-                    if (heading) {
-                        heading.setAttribute('tabindex', '-1');
-                        heading.focus();
+                // Custom smooth scroll animation
+                function animateScroll(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easedProgress = easeInOut(progress);
+                    
+                    window.scrollTo(0, startScrollTop + distance * easedProgress);
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animateScroll);
+                    } else {
+                        // Focus management after scroll completes
+                        const heading = targetSection.querySelector('h2, h3');
+                        if (heading) {
+                            heading.setAttribute('tabindex', '-1');
+                            heading.focus();
+                        }
                     }
-                }, 360);
+                }
+                
+                requestAnimationFrame(animateScroll);
                 
                 console.log('Active TOC item changed to:', this.dataset.section);
             }
@@ -140,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Initial active state - Overview section
-    updateActiveTOC('overview');
+    updateActiveTOC('overview', true);
 });
 
 // Phase 7: Primary Navigation Slide-on-Scroll-Up

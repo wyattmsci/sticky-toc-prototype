@@ -375,7 +375,7 @@ This prototype leverages **Model Context Protocol (MCP)** to directly read and v
 - Update active TOC item class on intersection change
 
 **Final Threshold (After Testing):**
-`[TO BE DOCUMENTED AFTER PHASE 6]`
+Combined approach: `rootMargin: '120px 0px -60% 0px'` (120px top offset accounting for sticky TOC height 96px + 24px buffer, with 40% visible threshold)
 
 ### Scroll Direction Detection
 
