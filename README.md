@@ -355,12 +355,12 @@ This prototype leverages **Model Context Protocol (MCP)** to directly read and v
 |-----------|-------|-------|
 | Anchor scroll duration | 360ms | Smooth scroll when clicking TOC item |
 | Anchor scroll easing | ease-in-out | Standard easing function |
-|此外 Scroll-sync debounce | 50ms | Prevents jitter during scroll |
+| Scroll-sync debounce | 50ms | Prevents jitter during scroll |
 | Active underline animation | 160ms | Transition when active state changes |
 | Active underline easing | cubic-bezier(0.2, 0.8, 0.2, 1) | Custom easing for smooth feel |
 | Primary nav slide duration | 220ms | Slide animation on scroll up |
 | Primary nav slide easing | ease-out | Standard easing function |
-| IntersectionObserver threshold | `[TO BE DETERMINED]` | Either 40% visible OR top ≤ 120px from viewport top |
+| IntersectionObserver threshold | `120px top offset + 40% visible` | Combined: `rootMargin: '120px 0px -60% 0px'` (accounts for TOC height + buffer) |
 
 ### IntersectionObserver Configuration
 
