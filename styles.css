@@ -89,6 +89,7 @@ body.nav-fixed {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 1100; /* Higher than TOC (1000) so nav appears above TOC when fixed */
     /* Position change is instant - no transition to prevent sliding from side */
 }
 
@@ -301,8 +302,8 @@ body.nav-fixed {
     transition: top 220ms ease-out; /* Match nav animation duration */
 }
 
-body.nav-visible .sticky-toc {
-    top: var(--primary-nav-height); /* Position TOC below nav when nav is visible */
+body.nav-fixed .sticky-toc {
+    top: var(--primary-nav-height); /* Position TOC below nav when nav is fixed */
 }
 
 .toc-container {
