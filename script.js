@@ -1,5 +1,5 @@
 // Sticky TOC Prototype - JavaScript
-//参考 Phase 4: Active state styling & click handling ✅
+// Phase 4-6: Active state styling, click handling, and scroll-sync ✅
 
 console.log('Sticky TOC Prototype loaded');
 
@@ -54,8 +54,95 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Phase 5-10 will add:
-// - Click-to-anchor navigation (360ms ease-in-out)
-// - Scroll-sync active state (IntersectionObserver)
+// Phase 6: Scroll-Sync Active State with IntersectionObserver
+document.addEventListener('DOMContentLoaded', function() {
+    const sections = [
+        { id: 'overview', tocItem: document.querySelector('[data-section="overview"]') },
+        { id: 'challenge', tocItem: document.querySelector('[data-section="challenge"]') },
+        { id: 'action', tocItem: document.querySelector('[data-section="action"]') },
+        { id: 'impact', tocItem: document.querySelector('[data-section="impact"]') }
+    ];
+    
+    const tocItems = document.querySelectorAll('.toc-item');
+    const tocHeight = 96; // TOC height in pixels
+    
+    // Function to update active TOC item
+    function updateActiveTOC(sectionId) {
+        sections.forEach(section => {
+            if (section.tocItem) {
+                if (section.id === sectionId) {
+                    section.tocItem.classList.add('active');
+                    section.tocItem.setAttribute('aria-current', 'page');
+                } else {
+                    section.tocItem.classList.remove('active');
+                    section.tocItem.removeAttribute('aria-current');
+                }
+            }
+        });
+    }
+    
+    // IntersectionObserver setup - using threshold: top of section ≤ 120px from viewport top
+    // This accounts for sticky TOC height (96px) + small buffer (24px)
+    const observerOptions = {
+        root: null, // viewport
+        rootMargin: `${tocHeight + 24}px 0px -60% 0px`, // 120px top offset, 40% visible threshold
+        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    };
+    
+    let activeSectionId = null;
+    let debounceTimeout = null;
+    
+    // Map to store observed elements to their section IDs
+    const elementToSectionMap = new Map();
+    
+    const observer = new IntersectionObserver((entries) => {
+        // Debounce updates by 50ms to prevent jitter
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+            // Find the section that's most visible in the viewport
+            let maxRatio = 0;
+            let mostVisibleSectionId = null;
+            
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                    maxRatio = entry.intersectionRatio;
+                    // Get section ID from the map
+                    const sectionId = elementToSectionMap.get(entry.target);
+                    if (sectionId) {
+                        mostVisibleSectionId = sectionId;
+                    }
+                }
+            });
+            
+            // Update active state only if a different section is now most visible
+            if (mostVisibleSectionId && mostVisibleSectionId !== activeSectionId) {
+                activeSectionId = mostVisibleSectionId;
+                updateActiveTOC(activeSectionId);
+            }
+        }, 50); // 50ms debounce per spec
+    }, observerOptions);
+    
+    // Observe all section headings
+    sections.forEach(section => {
+        const sectionElement = document.getElementById(section.id);
+        if (sectionElement) {
+            // Observe the section heading for better accuracy
+            const heading = sectionElement.querySelector('h2.section-title-primary');
+            if (heading) {
+                elementToSectionMap.set(heading, section.id);
+                observer.observe(heading);
+            } else {
+                // Fallback: observe the section itself
+                elementToSectionMap.set(sectionElement, section.id);
+                observer.observe(sectionElement);
+            }
+        }
+    });
+    
+    // Initial active state - Overview section
+    updateActiveTOC('overview');
+});
+
+// Phase 7-10 will add:
 // - Primary nav slide-on-scroll-up (220ms ease-out)
 // - Accessibility enhancements
