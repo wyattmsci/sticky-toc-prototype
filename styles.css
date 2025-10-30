@@ -73,10 +73,7 @@ body.nav-visible {
    ======================================== */
 
 .primary-nav {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%) translateY(0);
+    position: relative;
     width: 100%;
     max-width: var(--container-width);
     height: var(--primary-nav-height);
@@ -85,10 +82,12 @@ body.nav-visible {
     transition: transform 220ms ease-out;
 }
 
-/* Only slide nav up when it needs to be hidden (on scroll down after being scrolled past) */
-/* When scrolling up, nav slides back into view */
-.primary-nav.scrolled-past {
-    transform: translateX(-50%) translateY(-100%);
+/* When scrolling up, nav becomes fixed and slides into view */
+.primary-nav.nav-fixed {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
 }
 
 .nav-utility {

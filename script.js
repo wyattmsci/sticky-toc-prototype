@@ -153,29 +153,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get nav height from computed styles (140px per CSS variable)
     const navHeight = primaryNav ? primaryNav.offsetHeight : 140;
     
-    // Function to handle scroll direction detection and nav visibility
-    // Matching MSCI.com behavior: nav hides immediately on any downward scroll, shows on upward scroll
+    // Nav behavior: Static (scrolls out naturally) when scrolling down, fixed (slides in) when scrolling up
     function handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const scrollingDown = scrollTop > lastScrollTop;
         const scrollingUp = scrollTop < lastScrollTop;
         
-        // At very top of page (scrollTop === 0), nav is visible
+        // At very top of page (scrollTop === 0), nav is visible (static position)
         if (scrollTop === 0) {
-            primaryNav.classList.remove('scrolled-past');
+            primaryNav.classList.remove('nav-fixed');
             body.classList.add('nav-visible');
         } else if (scrollingDown) {
-            // Scrolling down - hide nav immediately (goes out of view as soon as scrolling starts)
-            primaryNav.classList.add('scrolled-past');
+            // Scrolling down - nav is static, naturally scrolls out of view (no transform, just scrolls with page)
+            primaryNav.classList.remove('nav-fixed');
             body.classList.remove('nav-visible');
         } else if (scrollingUp) {
-            // Scrolling up - slide nav back into view
-            primaryNav.classList.remove('scrolled-past');
+            // Scrolling up - nav becomes fixed and slides into view
+            primaryNav.classList.add('nav-fixed');
             body.classList.add('nav-visible');
         }
-        // If stationary and not at top, maintain current state (hidden if scrolled down, visible if scrolled up)
+        // If stationary, maintain current state
         
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         ticking = false;
     }
     
