@@ -64,7 +64,6 @@ body {
     padding-top: 0;
 }
 
-/* Body padding only needed when nav is sticky (fixed) */
 body.nav-visible {
     padding-top: var(--primary-nav-height);
 }
@@ -74,22 +73,22 @@ body.nav-visible {
    ======================================== */
 
 .primary-nav {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
     width: 100%;
     max-width: var(--container-width);
     height: var(--primary-nav-height);
     background-color: var(--color-white);
     z-index: 900; /* Lower than TOC to ensure TOC stays on top when sticky */
-    /* Nav scrolls out naturally like any other section when scrolling down */
+    transition: transform 220ms ease-out;
 }
 
-/* When scrolling up, nav becomes fixed and slides into view */
-.primary-nav.nav-sticky {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%) translateY(0);
-    transition: transform 220ms ease-out;
+/* Only slide nav up when it needs to be hidden (on scroll down after being scrolled past) */
+/* When scrolling up, nav slides back into view */
+.primary-nav.scrolled-past {
+    transform: translateX(-50%) translateY(-100%);
 }
 
 .nav-utility {
