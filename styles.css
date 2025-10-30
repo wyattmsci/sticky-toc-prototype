@@ -60,11 +60,11 @@ body {
     margin: 0 auto;
     /* Prevent layout shift during scroll */
     overflow-x: hidden;
-    /* Offset for fixed primary nav - will adjust dynamically */
     padding-top: 0;
 }
 
-body.nav-visible {
+/* Only add padding when nav is fixed */
+body.nav-fixed {
     padding-top: var(--primary-nav-height);
 }
 
@@ -79,7 +79,8 @@ body.nav-visible {
     height: var(--primary-nav-height);
     background-color: var(--color-white);
     z-index: 900; /* Lower than TOC to ensure TOC stays on top when sticky */
-    transition: transform 220ms ease-out;
+    margin: 0 auto; /* Center the nav container */
+    /* No transition - position changes should be instant to avoid sliding */
 }
 
 /* When scrolling up, nav becomes fixed and slides into view */
@@ -87,7 +88,8 @@ body.nav-visible {
     position: fixed;
     top: 0;
     left: 50%;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%);
+    /* Position change is instant - no transition to prevent sliding from side */
 }
 
 .nav-utility {

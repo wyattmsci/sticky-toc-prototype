@@ -162,15 +162,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // At very top of page (scrollTop === 0), nav is visible (static position)
         if (scrollTop === 0) {
             primaryNav.classList.remove('nav-fixed');
-            body.classList.add('nav-visible');
+            body.classList.remove('nav-fixed');
         } else if (scrollingDown) {
             // Scrolling down - nav is static, naturally scrolls out of view (no transform, just scrolls with page)
             primaryNav.classList.remove('nav-fixed');
-            body.classList.remove('nav-visible');
+            body.classList.remove('nav-fixed');
         } else if (scrollingUp) {
             // Scrolling up - nav becomes fixed and slides into view
             primaryNav.classList.add('nav-fixed');
-            body.classList.add('nav-visible');
+            body.classList.add('nav-fixed');
         }
         // If stationary, maintain current state
         
@@ -186,8 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, { passive: true });
     
-    // Initialize: nav visible at page load
-    body.classList.add('nav-visible');
+    // Initialize: nav visible at page load (static position, no padding needed)
 });
 
 // Phase 8-10 will add:
