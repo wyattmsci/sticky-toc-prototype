@@ -12,6 +12,51 @@ This prototype demonstrates a sticky table of contents (TOC) interaction pattern
 
 ---
 
+## MCP Figma Integration
+
+This prototype leverages **Model Context Protocol (MCP)** to directly read and validate designs from Figma throughout development. This ensures pixel-perfect accuracy and allows for real-time design verification against the source mockups.
+
+### MCP Tools Available
+
+- **`mcp_figma-remote_get_design_context`** - Extract component code, design tokens, and styling details
+- **`mcp_figma-remote_get_metadata`** - Get frame/node structure, dimensions, and hierarchy
+- **`mcp_figma-remote_get_screenshot`** - Visual reference for side-by-side comparison
+- **`mcp_figma-remote_get_variable_defs`** - Extract design system variable definitions
+
+### Figma Configuration
+
+- **File Key:** `TyHg5geBhiuuFv1rBHJX7N`
+- **Main Frame:** `11006:130381` (Case Study - Future State)
+- **Sticky TOC Node:** `11006:134676`
+- **Primary Nav Node:** `11006:130382`
+- **Section Frames:**
+  - Overview: `11006:130384`
+  - Challenge: `11006:130385`
+  - Action: `11006:130386`
+  - Impact: `11006:130388`
+
+### MCP Usage Throughout Phases
+
+| Phase | MCP Integration | Purpose |
+|-------|----------------|---------|
+| **Phase 1** ✅ | Design token extraction | Extract colors, typography, spacing from Figma |
+| **Phase 2** | Screenshot comparison & design context | Verify HTML/CSS matches Figma mockups |
+| **Phase 3** | Position verification | Validate sticky positioning against design |
+| **Phase 4** | Active state validation | Compare active styling with Figma component |
+| **Phase 5** | Layout reference | Ensure anchor targets align with design |
+| **Phase 6** | Scroll behavior reference | Validate scroll-sync matches design intent |
+| **Phase 7** | Nav structure verification | Verify primary nav slide behavior |
+| **Phase 9** | Final visual audit | Complete comparison before handoff |
+
+### MCP Workflow Best Practices
+
+1. **Before Implementation:** Fetch latest Figma data to ensure design hasn't changed
+2. **During Implementation:** Use screenshots for visual comparison during development
+3. **After Implementation:** Validate final result matches source design exactly
+4. **Design Changes:** Re-extract tokens if Figma mockups are updated
+
+---
+
 ## Phased Implementation Plan
 
 ### Phase 1: Project Setup & Design Inspection ✅
@@ -19,8 +64,8 @@ This prototype demonstrates a sticky table of contents (TOC) interaction pattern
 
 **Tasks:**
 - [x] Set up project structure (HTML, CSS, JavaScript)
-- [x] Access Figma file using provided `FIGMA_FILE_KEY`
-- [x] Inspect frame to extract:
+- [x] Access Figma file using MCP tools (`mcp_figma-remote_get_design_context`, `mcp_figma-remote_get_metadata`)
+- [x] Inspect frame via MCP to extract:
   - [x] Section headings and anchor IDs
   - [x] TOC typography (font family, size, weight, line-height)
   - [x] Spacing tokens (margins, padding, gaps)
@@ -46,6 +91,11 @@ This prototype demonstrates a sticky table of contents (TOC) interaction pattern
 **Goal:** Create pixel-perfect static representation matching Figma mockups.
 
 **Tasks:**
+- [ ] **MCP Design Refresh:**
+  - [ ] Fetch latest screenshot of main frame (`11006:130381`) via MCP `get_screenshot`
+  - [ ] Fetch design context for sticky nav (`11006:134676`) via MCP `get_design_context`
+  - [ ] Fetch primary nav structure (`11006:130382`) for accurate dimensions
+  - [ ] Verify design tokens haven't changed since Phase 1
 - [ ] Build HTML structure with all sections and headings
 - [ ] Implement primary navigation bar (height: 140px total, main nav: 96px)
 - [ ] Create TOC markup (semantic HTML, proper heading hierarchy)
@@ -57,16 +107,21 @@ This prototype demonstrates a sticky table of contents (TOC) interaction pattern
   - [ ] Layout: Centered TOC with 40px gaps, sticky positioning
 - [ ] Ensure TOC is initially positioned below primary nav
 - [ ] Test responsive behavior (desktop viewport only - 1440px width)
+- [ ] **MCP Verification:**
+  - [ ] Compare implemented prototype screenshot with Figma screenshot (`11006:130381`)
+  - [ ] Verify all spacing, colors, and typography match MCP-extracted tokens
+  - [ ] Validate TOC positioning matches Figma sticky nav component (`11006:134676`)
 
 **Acceptance Criteria:**
-- Visual match to Figma mockups (pixel-perfectatar within reasonable tolerance)
+- Visual match to Figma mockups (pixel-perfect within reasonable tolerance)
 - All sections render with correct content
 - TOC structure semantically correct
-- No visual discrepancies reported
+- No visual discrepancies when compared with MCP-fetched Figma screenshots
 
 **Deliverables:**
 - Static HTML/CSS prototype
-- Screenshot comparison with Figma frames
+- Screenshot comparison with Figma frames (via MCP)
+- Verified alignment with MCP-extracted design tokens
 
 ---
 
@@ -94,22 +149,30 @@ This prototype demonstrates a sticky table of contents (TOC) interaction pattern
 **Goal:** Visual indication of active TOC item using primary blue and underline.
 
 **Tasks:**
+- [ ] **MCP Active State Reference:**
+  - [ ] Fetch sticky nav component (`11006:134676`) design context via MCP
+  - [ ] Extract active state styling (color, underline thickness, font weight)
+  - [ ] Verify primary blue token matches MCP-extracted value
 - [ ] Apply active state CSS:
-  - [ ] Primary blue color: `#1a3fd6`
-  - [ ] Font weight: Medium (500) for active, Regular (Am) for inactive excerpts
+  - [ ] Primary blue color: `#1a3fd6` (validated via MCP)
+  - [ ] Font weight: Medium (500) for active, Regular (400) for inactive
   - [ ] Underline decoration: 2px solid #1a3fd6 at bottom of active item
   - [ ] Ensure only one item active at a time
 - [ ] Set initial active state (first section: "Overview")
 - [ ] Create `.active` class for TOC items
+- [ ] **MCP Verification:**
+  - [ ] Compare active state with Figma component screenshot
+  - [ ] Verify underline positioning and thickness match design
 
 **Acceptance Criteria:**
-- Active item displays in primary blue (#1a3fd6)
-- Active item shows 2px underline in primary blue
+- Active item displays in primary blue (#1a3fd6) matching MCP-extracted token
+- Active item shows 2px underline in primary blue (verified against Figma)
 - Only one active item visible at any time
--魂Color matches design system token exactly
+- Color and styling matches Figma design exactly (validated via MCP)
 
 **Deliverables:**
 - Active state CSS implementation
+- MCP-verified active state styling match
 
 ---
 
@@ -172,24 +235,33 @@ This prototype demonstrates a sticky table of contents (TOC) interaction pattern
 **Goal:** Primary nav slides into view when scrolling up.
 
 **Tasks:**
+- [ ] **MCP Nav Structure Reference:**
+  - [ ] Fetch primary nav component (`11006:130382`) metadata via MCP
+  - [ ] Verify nav height and positioning from Figma structure
+  - [ ] Check TOC positioning relative to nav in Figma mockup
 - [ ] Detect scroll direction (up vs. down)
 - [ ] Track scroll position changes
 - [ ] On scroll up:
   - [ ] Show primary navigation with slide-down animation
   - [ ] Duration: **220ms**
   - [ ] Easing: **ease-out**
-  - [ ] Ensure TOC remains sticky below nav (not obscured)
+  - [ ] Ensure TOC remains sticky below nav (not obscured, matching Figma layout)
 - [ ] Handle scroll down behavior (nav can hide or remain visible per design)
 - [ ] Test with various scroll speeds
+- [ ] **MCP Layout Verification:**
+  - [ ] Verify nav slide doesn't break TOC positioning (compare with Figma)
+  - [ ] Ensure spacing between nav and TOC matches design intent
 
 **Acceptance Criteria:**
 - Primary nav slides down on scroll up (220ms ease-out)
-- TOC remains visible and unobstructed
+- TOC remains visible and unobstructed (validated against Figma structure)
 - Smooth animation without layout shift
 - Scroll direction detection accurate
+- Layout matches Figma mockup behavior (verified via MCP)
 
 **Deliverables:**
 - Primary nav slide implementation
+- MCP-verified nav/TOC positioning accuracy
 
 ---
 
@@ -223,6 +295,11 @@ This prototype demonstrates a sticky table of contents (TOC) interaction pattern
 **Goal:** Refine interactions and ensure all requirements met.
 
 **Tasks:**
+- [ ] **Final MCP Visual Audit:**
+  - [ ] Fetch complete screenshot of main frame (`11006:130381`) via MCP
+  - [ ] Compare final prototype with Figma mockup side-by-side
+  - [ ] Verify all visual elements match: spacing, colors, typography, positioning
+  - [ ] Document any intentional deviations from Figma (if any)
 - [ ] Cross-browser testing (Chrome, Firefox, Safari, Edge)
 - [ ] Test scroll performance (smooth 60fps)
 - [ ] Verify all animation timings match specifications
@@ -232,13 +309,15 @@ This prototype demonstrates a sticky table of contents (TOC) interaction pattern
 
 **Acceptance Criteria:**
 - All phases complete and functional
-- No visual regressions
+- No visual regressions (validated via MCP comparison)
 - Performance acceptable (60fps scrolling)
 - All acceptance criteria from previous phases met
+- Final prototype matches Figma design (verified via MCP screenshot comparison)
 
 **Deliverables:**
 - Polished prototype
 - Testing notes
+- MCP validation report (prototype vs. Figma)
 
 ---
 
@@ -474,7 +553,8 @@ gh repo create wyattmsci/sticky-toc-prototype --public --source=. --remote=origi
 - [ ] Demo recording 2 (scroll with active state + nav slide): `[TO BE ADDED]`
 - [x] `section-anchors.json`: Created (see below)
 - [ ] `design-tokens.json`: `[OPTIONAL - tokens documented in README]`
-- [ ] GitHub repository: `[TO BE CREATED]`
+- [x] GitHub repository: `wyattmsci/sticky-toc-prototype` (https://github.com/wyattmsci/sticky-toc-prototype)
+- [x] MCP Figma integration: Configured and documented
 
 ---
 
@@ -497,12 +577,13 @@ gh repo create wyattmsci/sticky-toc-prototype --public --source=. --remote=origi
 
 ## Notes
 
-- **Visual Constraints:** Do not modify spacing, typography, colors, or layout from Figma mockups.
+- **Visual Constraints:** Do not modify spacing, typography, colors, or layout from Figma mockups. All visual decisions must be validated against MCP-fetched Figma data.
 - **Desktop Only:** This prototype is designed for desktop viewports only (1440px width).
 - **Browser Support:** Modern browsers (Chrome, Firefox, Safari, Edge - latest versions).
 - **Performance:** Target 60fps during scroll animations.
 - **Primary Nav:** Height is 140px total (44px utility nav + 96px main nav). TOC sits at 96px height below nav.
 - **Sticky Behavior:** TOC should remain sticky at top:0 after primary nav scrolls past viewport top (or adjust based on nav slide behavior).
+- **MCP Integration:** Always verify design accuracy using MCP tools before marking a phase complete. If Figma mockups change, re-extract tokens and update implementation.
 
 ---
 

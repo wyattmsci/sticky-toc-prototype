@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSCI Case Study - Sticky TOC Prototype</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Primary Navigation -->
+    <nav class="primary-nav" role="navigation" aria-label="Primary navigation">
+        <div class="nav-utility">
+            <div class="nav-utility-content">
+                <a href="#" class="nav-link">Global</a>
+                <span class="nav-divider">|</span>
+                <a href="#" class="nav-link">Support</a>
+                <span class="nav-divider">|</span>
+                <a href="#" class="nav-link">Client Log In</a>
+            </div>
+        </div>
+        <div class="nav-main">
+            <div class="nav-main-content">
+                <div class="nav-left">
+                    <div class="nav-logo">
+                        <span class="logo-text">MSCI</span>
+                    </div>
+                    <div class="nav-menu">
+                        <a href="#" class="nav-menu-link">Featured Solutions</a>
+                        <a href="#" class="nav-menu-link">Data & Analytics</a>
+                        <a href="#" class="nav-menu-link">Indexes</a>
+                        <a href="#" class="nav-menu-link">Research & Insights</a>
+                        <a href="#" class="nav-menu-link">Discover MSCI</a>
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <button class="btn-search" aria-label="Search">Search</button>
+                    <button class="btn-primary">Contact us</button>
+                    <button class="btn-icon" aria-label="Menu">☰</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">How a growing Texas endowment built a total portfolio view of risk</h1>
+                <p class="hero-subtitle">Explore how MSCI can help your risk team build a total portfolio view.</p>
+                <button class="btn-primary btn-large">Request a demo</button>
+            </div>
+            <div class="hero-logo">
+                <div class="logo-box">
+                    <span class="logo-partner">VESTCOR</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky Table of Contents -->
+    <nav class="sticky-toc" role="navigation" aria-label="Table of contents">
+        <div class="toc-container">
+            <div class="toc-items">
+                <a href="#overview" class="toc-item active" data-section="overview" aria-current="page">
+                    <span class="toc-text">Overview</span>
+                    <span class="toc-underline"></span>
+                </a>
+                <a href="#challenge" class="toc-item" data-section="challenge">
+                    <span class="toc-text">Challenge</span>
+                    <span class="toc-underline"></span>
+                </a>
+                <a href="#action" class="toc-item" data-section="action">
+                    <span class="toc-text">Action</span>
+                    <span class="toc-underline"></span>
+                </a>
+                <a href="#impact" class="toc-item" data-section="impact">
+                    <span class="toc-text">Impact</span>
+                    <span class="toc-underline"></span>
+                </a>
+            </div>
+            <button class="btn-primary btn-toc-demo">Request a demo</button>
+        </div>
+    </nav>
+
+    <!-- Section: Overview -->
+    <section id="overview" class="section section-overview">
+        <div class="section-content">
+            <div class="section-header">
+                <h2 class="section-title-primary">Overview</h2>
+                <h3 class="section-title-secondary">Providing analytics to meet distinct risk assessment goals</h3>
+            </div>
+            <div class="section-body">
+                <p class="section-text">Vestcor Inc. is a Canadian not-for-profit investment management firm with over CAD $20 billion in assets under management. It delivers global investment and pension administration services to 11 public sector pension plans and 4 employee benefit plans, supporting more than 111,000 active and retired members across 140 employer groups.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <h4 class="stat-value">+13% AUM YOY</h4>
+                        <p class="stat-description">Lorem ipsum dolor sit amet consectetur.</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <h4 class="stat-value">$20+ billion in assets</h4>
+                        <p class="stat-description">A Canadian not-for-profit investment management firm.</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <h4 class="stat-value">111,000+ Members</h4>
+                        <p class="stat-description">Supporting active and retired members across 140 employer groups.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Challenge -->
+    <section id="challenge" class="section section-challenge">
+        <div class="section-content">
+            <div class="section-header">
+                <h2 class="section-title-primary">Challenge</h2>
+                <h3 class="section-title-secondary">Shifting plans and allocations</h3>
+            </div>
+            <div class="section-body-challenge">
+                <div class="challenge-text">
+                    <p class="section-text">As its client pension plans shifted to shared-risk structures and allocations to alternative assets increased (from less than 12% in 2014 to over 32% by 2023), Vestcor required an advanced risk framework to manage increasingly diverse investment pools and tighter risk limits.</p>
+                    <p class="section-text">The firm needed:</p>
+                    <ul class="section-list">
+                        <li>A unified risk management platform that supported daily decision-making across front and middle office teams.</li>
+                        <li>Tools to align portfolio construction with client-specific objectives.</li>
+                        <li>Analytics that could keep pace with its evolving governance and operational models.</li>
+                    </ul>
+                    <p class="section-text">Vestcor looked to MSCI for a partner that understood the challenges of being both an asset manager and an asset owner — and could deliver sophisticated risk insights across public, private, and alternative asset classes.</p>
+                </div>
+                <div class="challenge-image">
+                    <div class="image-placeholder">Challenge Image</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Action -->
+    <section id="action" class="section section-action">
+        <div class="section-content">
+            <div class="section-header">
+                <h2 class="section-title-primary">Action</h2>
+                <h3 class="section-title-secondary">Creating a unified risk language for a multi-plan model</h3>
+            </div>
+            <div class="section-body-action">
+                <div class="action-left">
+                    <p class="section-text">Vestcor adopted MSCI's equity factor analytics — including sustainability and machine learning factors — to build a common language for investment and risk teams. This helped bridge internal communication, standardize client reporting, and implement more adaptive, responsive investment processes. Explore how MSCI can help your risk team build a total portfolio view.</p>
+                </div>
+                <div class="action-right">
+                    <div class="action-item">
+                        <h4 class="action-subtitle">MSCI equity factor analytics</h4>
+                        <p class="action-text">Using MSCI's equity factor analytics, Vestcor was able to implement an analytical platform that served as a shared connection between the front and middle office.</p>
+                    </div>
+                    <div class="action-divider"></div>
+                    <div class="action-item">
+                        <h4 class="action-subtitle">Enhanced portfolio construction</h4>
+                        <p class="action-text">The firm opted not to build internally, feeling it required a specialized partner for its complex hybrid structure as an asset manager managing over 80% of its portfolio in-house.</p>
+                    </div>
+                    <div class="action-divider"></div>
+                    <div class="action-item">
+                        <h4 class="action-subtitle">Embedded ESG & climate analytics</h4>
+                        <p class="action-text">Vestcor, a longtime subscriber of MSCI index, analytics and climate solutions, progressively integrated more of MSCI's data and tools as the scope and complexity of its operations increased.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Impact -->
+    <section id="impact" class="section section-impact">
+        <div class="section-content">
+            <div class="section-header">
+                <h2 class="section-title-primary">Impact</h2>
+                <h3 class="section-title-secondary">Empowering smarter pension decisions through transparency and data</h3>
+            </div>
+            <div class="section-body-impact">
+                <div class="impact-text">
+                    <p class="section-text">For Vestcor, the analytics played a critical role in positioning the firm to better mitigate emerging risks from inflation to deglobalization — to build institutional resilience and react more efficiently to market shocks with deeper insights into its risk and return drivers. With support from MSCI's solutions, Vestcor improved its ability to:</p>
+                    <ul class="section-list">
+                        <li>Understand risk exposures across asset classes and time horizons</li>
+                        <li>Support client investment trustees with scenario-based risk modeling</li>
+                        <li>React quickly to inflation shocks, deglobalization trends, or changing mandates</li>
+                        <li>Build a more robust governance framework across its growing multi-employer platform</li>
+                    </ul>
+                    <p class="section-text">By leveraging MSCI's tools and 20+ years of partnership, Vestcor positioned itself for continued growth, while maintaining the resilience, clarity, and accountability required to serve its public sector pension members.</p>
+                </div>
+                <div class="impact-cards">
+                    <div class="impact-card">
+                        <h4 class="impact-value">1,000+</h4>
+                        <p class="impact-label">Data products</p>
+                    </div>
+                    <div class="impact-card">
+                        <h4 class="impact-value">15M+</h4>
+                        <p class="impact-label">Securities maintained daily</p>
+                    </div>
+                    <div class="impact-card">
+                        <h4 class="impact-value">290K+</h4>
+                        <p class="impact-label">Indexes calculated daily</p>
+                    </div>
+                    <div class="impact-card impact-card-primary">
+                        <h4 class="impact-value">7.1B+</h4>
+                        <p class="impact-label">Positions processed in analytics in a single day</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">© 2025 MSCI Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
