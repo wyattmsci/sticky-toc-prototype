@@ -160,24 +160,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const scrollingDown = scrollTop > lastScrollTop;
         const scrollingUp = scrollTop < lastScrollTop;
         
-        // At very top of page (scrollTop === 0), nav is visible (naturally in view)
+        // At very top of page (scrollTop === 0), nav is visible naturally (not sticky)
         if (scrollTop === 0) {
-            primaryNav.classList.remove('scrolled-past');
+            primaryNav.classList.remove('nav-sticky');
+            body.classList.add('nav-visible');
+        } else if (scrollingUp) {
+            // Scrolling up - make nav fixed and slide it into view
+            primaryNav.classList.add('nav-sticky');
             body.classList.add('nav-visible');
         } else if (scrollingDown) {
-            // Scrolling down - nav stays fixed but naturally goes out of view
-            // Don't actively hide it until scrolled past nav height
-            // Only then mark it as scrolled-past so it stays hidden
-            if (scrollTop > navHeight) {
-                primaryNav.classList.add('scrolled-past');
-                body.classList.remove('nav-visible');
-            }
-        } else if (scrollingUp) {
-            // Scrolling up - slide nav back into view
-            primaryNav.classList.remove('scrolled-past');
-            body.classList.add('nav-visible');
+            // Scrolling down - nav is static, naturally goes out of view
+            // Remove sticky class so it scrolls out like any other section
+            primaryNav.classList.remove('nav-sticky');
+            body.classList.remove('nav-visible');
         }
-        // If stationary and scrolled past nav, keep it hidden (already applied via scrolled-past class)
         
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
         ticking = false;
