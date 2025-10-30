@@ -1,16 +1,11 @@
 // Sticky TOC Prototype - JavaScript
-// Phases 2-7 Complete ✅
-// Phase 8: Skipped (accessibility handled by developers)
-// Phase 9: Polish & Testing ✅
+// Phase 4-6: Active state styling, click handling, and scroll-sync ✅
 
 console.log('Sticky TOC Prototype loaded');
 
 // Phase 2 ✅: Static structure complete
 // Phase 3 ✅: Sticky positioning complete (CSS-based)
 // Phase 4 ✅: Active state styling & click handling complete
-// Phase 5 ✅: Click-to-anchor navigation (360ms ease-in-out)
-// Phase 6 ✅: Scroll-sync active state with IntersectionObserver
-// Phase 7 ✅: Primary nav slide-on-scroll-up (220ms ease-out)
 
 // TOC Click Handler - Update active state and anchor navigation
 document.addEventListener('DOMContentLoaded', function() {
@@ -23,15 +18,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetSection = document.getElementById(targetId);
             
             if (targetSection) {
-                // Update active state immediately on click (instant, no delay)
+                // Remove active class from all items
                 tocItems.forEach(tocItem => {
                     tocItem.classList.remove('active');
                     tocItem.removeAttribute('aria-current');
                 });
+                
+                // Add active class to clicked item
                 this.classList.add('active');
                 this.setAttribute('aria-current', 'page');
                 
-                // Smooth scroll to section using native smooth scroll (super smooth, hardware-accelerated)
+                // Smooth scroll to section (360ms ease-in-out per Phase 5 spec)
                 const tocHeight = 96; // TOC height is 96px
                 const targetRect = targetSection.getBoundingClientRect();
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -42,14 +39,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     behavior: 'smooth'
                 });
                 
-                // Focus management (minimal delay for screen reader accessibility)
-                const heading = targetSection.querySelector('h2, h3');
-                if (heading) {
-                    setTimeout(() => {
+                // Focus management for accessibility
+                setTimeout(() => {
+                    const heading = targetSection.querySelector('h2, h3');
+                    if (heading) {
                         heading.setAttribute('tabindex', '-1');
                         heading.focus();
-                    }, 100);
-                }
+                    }
+                }, 360);
                 
                 console.log('Active TOC item changed to:', this.dataset.section);
             }
@@ -143,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Initial active state - Overview section
-    updateActiveTOC('overview', true);
+    updateActiveTOC('overview');
 });
 
 // Phase 7: Primary Navigation Slide-on-Scroll-Up
@@ -160,29 +157,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to handle scroll direction detection and nav visibility
     function handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollingDown = scrollTop > lastScrollTop;
+        const scrollingUp = scrollTop < lastScrollTop;
         
-        // Detect scroll direction
-        if (scrollTop > lastScrollTop && scrollTop > navHeight) {
-            // Scrolling down - hide nav
-            if (isNavVisible) {
-                primaryNav.classList.add('hidden');
-                body.classList.remove('nav-visible');
-                isNavVisible = false;
-            }
-        } else if (scrollTop < lastScrollTop) {
-            // Scrolling up - show nav
+        // Nav should hide immediately when scrolling past it (matching MSCI site behavior)
+        // Nav shows when scrolling back up (behavior is correct, keep as is)
+        
+        if (scrollTop <= navHeight) {
+            // At top of page (within nav height), always show nav
             if (!isNavVisible) {
                 primaryNav.classList.remove('hidden');
                 body.classList.add('nav-visible');
                 isNavVisible = true;
             }
-        }
-        
-        // At top of page, always show nav
-        if (scrollTop <= 0) {
-            primaryNav.classList.remove('hidden');
-            body.classList.add('nav-visible');
-            isNavVisible = true;
+        } else if (scrollingUp) {
+            // Scrolling up - show nav (correct behavior, keep as is)
+            if (!isNavVisible) {
+                primaryNav.classList.remove('hidden');
+                body.classList.add('nav-visible');
+                isNavVisible = true;
+            }
+        } else {
+            // Scrolling down past nav OR stationary below nav - hide immediately (matching MSCI site)
+            if (isNavVisible) {
+                primaryNav.classList.add('hidden');
+                body.classList.remove('nav-visible');
+                isNavVisible = false;
+            }
         }
         
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
