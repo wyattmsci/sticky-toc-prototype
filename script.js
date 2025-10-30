@@ -23,12 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetSection = document.getElementById(targetId);
             
             if (targetSection) {
-                // Remove active class from all items
-                tocItems.forEach(tocItem => {
-                    tocItem.classList.remove('active');
-                    tocItem.removeAttribute('aria-current');
-                });
-                
                 // Update active state immediately on click (instant, no delay)
                 tocItems.forEach(tocItem => {
                     tocItem.classList.remove('active');
