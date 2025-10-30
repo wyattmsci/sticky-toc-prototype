@@ -143,6 +143,61 @@ document.addEventListener('DOMContentLoaded', function() {
     updateActiveTOC('overview');
 });
 
-// Phase 7-10 will add:
-// - Primary nav slide-on-scroll-up (220ms ease-out)
+// Phase 7: Primary Navigation Slide-on-Scroll-Up
+document.addEventListener('DOMContentLoaded', function() {
+    const primaryNav = document.querySelector('.primary-nav');
+    const body = document.body;
+    let lastScrollTop = 0;
+    let isNavVisible = true;
+    let ticking = false;
+    
+    // Get nav height from computed styles (140px per CSS variable)
+    const navHeight = primaryNav ? primaryNav.offsetHeight : 140;
+    
+    // Function to handle scroll direction detection and nav visibility
+    function handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Detect scroll direction
+        if (scrollTop > lastScrollTop && scrollTop > navHeight) {
+            // Scrolling down - hide nav
+            if (isNavVisible) {
+                primaryNav.classList.add('hidden');
+                body.classList.remove('nav-visible');
+                isNavVisible = false;
+            }
+        } else if (scrollTop < lastScrollTop) {
+            // Scrolling up - show nav
+            if (!isNavVisible) {
+                primaryNav.classList.remove('hidden');
+                body.classList.add('nav-visible');
+                isNavVisible = true;
+            }
+        }
+        
+        // At top of page, always show nav
+        if (scrollTop <= 0) {
+            primaryNav.classList.remove('hidden');
+            body.classList.add('nav-visible');
+            isNavVisible = true;
+        }
+        
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+        ticking = false;
+    }
+    
+    // Throttle scroll events using requestAnimationFrame
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(handleScroll);
+            ticking = true;
+        }
+    }, { passive: true });
+    
+    // Initialize: nav visible at page load
+    body.classList.add('nav-visible');
+    isNavVisible = true;
+});
+
+// Phase 8-10 will add:
 // - Accessibility enhancements

@@ -60,6 +60,12 @@ body {
     margin: 0 auto;
     /* Prevent layout shift during scroll */
     overflow-x: hidden;
+    /* Offset for fixed primary nav - will adjust dynamically */
+    padding-top: 0;
+}
+
+body.nav-visible {
+    padding-top: var(--primary-nav-height);
 }
 
 /* ========================================
@@ -67,11 +73,20 @@ body {
    ======================================== */
 
 .primary-nav {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
+    max-width: var(--container-width);
     height: var(--primary-nav-height);
     background-color: var(--color-white);
     z-index: 900; /* Lower than TOC to ensure TOC stays on top when sticky */
+    transition: transform 220ms ease-out;
+}
+
+.primary-nav.hidden {
+    transform: translateX(-50%) translateY(-100%);
 }
 
 .nav-utility {
@@ -280,6 +295,12 @@ body {
     border-bottom: 1px solid var(--color-stroke-primary);
     /* Ensure smooth scrolling behavior */
     will-change: position;
+    /* Adjust top when nav is visible */
+    transition: top 220ms ease-out; /* Match nav animation duration */
+}
+
+body.nav-visible .sticky-toc {
+    top: var(--primary-nav-height); /* Position TOC below nav when nav is visible */
 }
 
 .toc-container {
