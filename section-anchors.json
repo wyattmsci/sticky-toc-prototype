@@ -1,0 +1,48 @@
+{
+  "tocItems": [
+    {
+      "text": "Overview",
+      "anchorId": "overview",
+      "targetHeadingId": "section-overview",
+      "targetHeadingText": "Overview",
+      "targetHeadingSecondaryText": "Providing analytics to meet distinct risk assessment goals",
+      "figmaFrameId": "11006:130384",
+      "figmaNodeId": "9180:91556"
+    },
+    {
+      "text": "Challenge",
+      "anchorId": "challenge",
+      "targetHeadingId": "section-challenge",
+      "targetHeadingText": "Challenge",
+      "targetHeadingSecondaryText": "Shifting plans and allocations",
+      "figmaFrameId": "11006:130385",
+      "figmaNodeId": "9213:74293"
+    },
+    {
+      "text": "Action",
+      "anchorId": "action",
+      "targetHeadingId": "section-action",
+      "targetHeadingText": "Action",
+      "targetHeadingSecondaryText": "Creating a unified risk language for a multi-plan model",
+      "figmaFrameId": "11006:130386",
+      "figmaNodeId": "I11006:130386;9213:74393"
+    },
+    {
+      "text": "Impact",
+      "anchorId": "impact",
+      "targetHeadingId": "section-impact",
+      "targetHeadingText": "Impact",
+      "targetHeadingSecondaryText": "Empowering smarter pension decisions through transparency and data",
+      "figmaFrameId": "11006:130388",
+      "figmaNodeId": "9213:94081"
+    }
+  ],
+  "metadata": {
+    "figmaFileKey": "TyHg5geBhiuuFv1rBHJX7N",
+    "mainFrameId": "11006:130381",
+    "stickyNavNodeId": "11006:134676",
+    "primaryNavNodeId": "11006:130382",
+    "extractedDate": "2025-01-27"
+  }
+}
+
