@@ -155,35 +155,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const navHeight = primaryNav ? primaryNav.offsetHeight : 140;
     
     // Function to handle scroll direction detection and nav visibility
-    // Matching MSCI.com behavior: nav hides immediately on any downward scroll, shows on upward scroll
+    // Nav stays fixed at top and naturally goes out of view when scrolling down
+    // Nav slides back into view when scrolling up
     function handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollingDown = scrollTop > lastScrollTop;
         const scrollingUp = scrollTop < lastScrollTop;
         
-        // At very top of page (scrollTop === 0), always show nav
+        // At very top of page (scrollTop === 0), always ensure nav is visible
         if (scrollTop === 0) {
             if (!isNavVisible) {
                 primaryNav.classList.remove('hidden');
                 body.classList.add('nav-visible');
                 isNavVisible = true;
             }
-        } else if (scrollingDown) {
-            // Scrolling down - hide nav immediately (matching MSCI.com behavior)
-            if (isNavVisible) {
-                primaryNav.classList.add('hidden');
-                body.classList.remove('nav-visible');
-                isNavVisible = false;
-            }
         } else if (scrollingUp) {
-            // Scrolling up - show nav (correct behavior, keep as is)
+            // Scrolling up - show nav (slide it back into view)
             if (!isNavVisible) {
                 primaryNav.classList.remove('hidden');
                 body.classList.add('nav-visible');
                 isNavVisible = true;
             }
         }
-        // Note: If scrollTop > 0 and not scrolling (stationary), keep current state
+        // When scrolling down: nav stays fixed at top (naturally goes out of view as you scroll past)
+        // We don't actively hide it - it just scrolls out of view naturally
+        // Only on scroll up do we actively slide it back in
         
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
         ticking = false;
